@@ -1,0 +1,16 @@
+---
+  - name: Make lego dir
+    file:
+      path: "/opt/lego"
+      state: directory
+  
+  - name: Make lego data dir
+    file:
+      path: "/var/lego"
+      state: directory
+      
+  - name: Download lego
+    unarchive:
+      src: https://github.com/go-acme/lego/releases/download/v4.4.0/lego_v4.4.0_linux_amd64.tar.gz
+      dest: /opt/lego
+      remote_src: yes

@@ -1,0 +1,2 @@
+[development]
+vultr1 ansible_ssh_host=45.77.246.70 ansible_ssh_user=root
