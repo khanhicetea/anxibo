@@ -23,37 +23,15 @@
       - "php{{ php_ver | default ('7.4') }}-zip"
       - "php{{ php_ver | default ('7.4') }}-redis"
 
-- name: Timezone
-  lineinfile:
-    dest: /etc/php/{{ php_ver | default ('7.4') }}/{{ item }}/php.ini
-    regexp: "date.timezone ="
-    line: "date.timezone = {{ timezone | default('Asia/Ho_Chi_Minh') }}"
-  loop:
-    - cli
-    - fpm
+- name: Cli config
+  template:
+    src: 90-custom-cli.ini.j2
+    dest: /etc/php/{{ php_ver | default ('7.4') }}/cli/conf.d/90-custom.ini
 
-- name: FPM config 1
-  lineinfile:
-    dest: /etc/php/{{ php_ver | default ('7.4') }}/fpm/php.ini
-    search_string: "{{ item.key }} ="
-    line: "{{ item.key }} = {{ item.value }}"
-  with_items:
-    - { key: max_input_vars, value : 10000}
-    - { key: upload_max_filesize, value : 10M}
-    - { key: post_max_size, value : 12M}
-    - { key: max_execution_time, value : 60}
-  
-- name: FPM config 2
-  lineinfile:
-    dest: /etc/php/{{ php_ver | default ('7.4') }}/fpm/php.ini
-    search_string: "{{ item.key }}="
-    line: "{{ item.key }}={{ item.value }}"
-  with_items:
-    - { key: cgi.fix_pathinfo, value : 0}
-    - { key: opcache.enable , value : 1}
-    - { key: opcache.use_cwd, value : 1}
-    - { key: opcache.validate_timestamps, value : 1}
-    - { key: opcache.revalidate_freq, value : 20}
+- name: FPM config
+  template:
+    src: 90-custom-fpm.ini.j2
+    dest: /etc/php/{{ php_ver | default ('7.4') }}/fpm/conf.d/90-custom.ini
 
 - name: PHPFPM Service
   systemd:
