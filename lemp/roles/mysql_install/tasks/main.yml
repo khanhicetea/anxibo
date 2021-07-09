@@ -30,4 +30,5 @@
   template:
     src: my.cnf.j2
     dest: ~/.my.cnf
+    mode: '600'
   
