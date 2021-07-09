@@ -1,9 +1,9 @@
 ---
-  - hosts: all
-    roles:
-      - linux
-      - nginx_install
-      - mysql_install
-      - nodejs_install
-      - redis_install
-      - php_install
+- hosts: all
+  roles:
+    - linux
+    - nginx_install
+    - mysql_install
+    - nodejs_install
+    - redis_install
+    - php_install

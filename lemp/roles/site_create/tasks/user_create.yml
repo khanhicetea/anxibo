@@ -1,0 +1,51 @@
+---
+- name: create new user
+  user:
+    name: "{{ username }}"
+    group: "www-data"
+    shell: /bin/bash
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa
+
+- name: create bashrc
+  file:
+    path: "/home/{{ username }}/.bashrc"
+    owner: "{{ username }}"
+    group: "www-data"
+    state: touch
+
+- name: umask
+  lineinfile:
+    path: "/home/{{ username }}/.bashrc"
+    line: "umask 027"
+    create: yes
+
+- name: create logs dir
+  file:
+    path: "/home/{{ username }}/logs"
+    owner: "{{ username }}"
+    group: "www-data"
+    state: directory
+    mode: '770'
+
+- name: fpm pool
+  template:
+    src: pool.conf.j2
+    dest: /etc/php/{{ php_ver | default ('7.4') }}/fpm/pool.d/{{ username }}.conf
+
+- name: reload phpfpm service
+  systemd:
+    name: php{{ php_ver | default ('7.4') }}-fpm.service
+    state: reloaded
+
+- name: generate MySQL random password
+  set_fact:
+    mysql_user_pass: "{{ lookup('password', '/dev/null length=16 chars=ascii_letters,digits') }}"
+
+- name: create mysql user
+  command: "mysql -u root -e \"CREATE USER '{{ username }}'@'%' IDENTIFIED BY '{{ mysql_user_pass }}'; GRANT ALL PRIVILEGES ON `{{ username }}\\_%`.* TO '{{ username }}'@'%'; FLUSH PRIVILEGES;\""
+
+- name: show mysql user pass
+  debug:
+    msg: "MySQL account is {{ username }} / {{ mysql_user_pass }}"

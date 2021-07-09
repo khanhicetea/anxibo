@@ -1,0 +1,24 @@
+---
+- name: debug
+  debug:
+    # msg: "{{ username }} {{ main_domain }} {{ le_email }} {{ db_name }}"
+    msg: "{{ username }}"
+
+- name: check user is existed
+  command: "id {{ username }}"
+  register: checkuser
+  ignore_errors: true
+
+- name: create new user
+  debug:
+    msg: "Creating new user {{ username }}"
+  when: checkuser is failed
+
+- name: include create user task
+  include_tasks: user_create.yml
+  when: checkuser is failed
+
+- name: create new site
+  debug:
+    msg: "{{ username }} is already existed"
+  when: checkuser is succeeded
