@@ -1,5 +1,5 @@
 ---
   - hosts: all
     roles:
-      # - linux
-      - nginx_install
+      - linux
+      # - nginx_install

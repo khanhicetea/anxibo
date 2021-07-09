@@ -14,3 +14,24 @@
       src: https://github.com/go-acme/lego/releases/download/v4.4.0/lego_v4.4.0_linux_amd64.tar.gz
       dest: /opt/lego
       remote_src: yes
+
+  - name: Create renew domains data file
+    file:
+      path: /var/lego/renew_domains.txt
+      state: touch
+  
+  - name: Renew cron
+    template:
+      src: renew_cron.sh.j2
+      dest: /var/lego/renew_cron.sh
+      mode: a+x
+
+  - name: Setup cron
+    cron:
+      name: "RENEWCERTS"
+      minute: "13"
+      hour: "3"
+      weekday: "0"
+      user: root
+      cron_file: renew-certs
+      job: "/var/lego/renew_cron.sh > /dev/null 2>&1"

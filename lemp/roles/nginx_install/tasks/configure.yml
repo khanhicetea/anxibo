@@ -9,10 +9,10 @@
       src: 00-nginx.conf.j2
       dest: /etc/nginx/conf.d/00-nginx.conf
 
-  - name: Config fastcgi_snippets
+  - name: Config php_fastcgi
     template:
-      src: fastcgi_snippets.j2
-      dest: /etc/nginx/fastcgi_snippets
+      src: php_fastcgi.j2
+      dest: /etc/nginx/php_fastcgi
 
   - name: Config server snippet
     template:
