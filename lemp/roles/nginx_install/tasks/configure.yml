@@ -1,64 +1,64 @@
 ---
-  - name: Config nginx.conf
-    template:
-      src: nginx.conf.j2
-      dest: /etc/nginx/nginx.conf
+- name: Config nginx.conf
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
 
-  - name: Config 00-nginx.conf
-    template:
-      src: 00-nginx.conf.j2
-      dest: /etc/nginx/conf.d/00-nginx.conf
+- name: Config 00-nginx.conf
+  template:
+    src: 00-nginx.conf.j2
+    dest: /etc/nginx/conf.d/00-nginx.conf
 
-  - name: Config php_fastcgi
-    template:
-      src: php_fastcgi.j2
-      dest: /etc/nginx/php_fastcgi
+- name: Config php_fastcgi
+  template:
+    src: php_fastcgi.j2
+    dest: /etc/nginx/php_fastcgi
 
-  - name: Config server snippet
-    template:
-      src: server_snippet.j2
-      dest: /etc/nginx/server_snippet
+- name: Config server snippet
+  template:
+    src: server_snippet.j2
+    dest: /etc/nginx/server_snippet
 
-  - name: Config tls snippet
-    template:
-      src: tls_snippet.j2
-      dest: /etc/nginx/tls_snippet
+- name: Config tls snippet
+  template:
+    src: tls_snippet.j2
+    dest: /etc/nginx/tls_snippet
 
-  - name: Make dirs
-    file:
-      path: "{{ item }}"
-      state: directory
-    loop:
-      - "/etc/nginx/tls"
-      - "/usr/share/nginx/acme-challenge"
-  
-  - name: Nginx nolimit
-    lineinfile:
-      path: /etc/security/limits.conf
-      line: "{{ item }}"
-      create: yes
-    loop:
-      - "nginx  soft  nofile  5000"
-      - "nginx  hard  nofile  10000"
+- name: Make dirs
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "/etc/nginx/tls"
+    - "/usr/share/nginx/acme-challenge"
 
-  - name: Generate DHparam
-    openssl_dhparam:
-      path: /etc/nginx/tls/dhparam.pem
-      size: 2048
+- name: Nginx nolimit
+  lineinfile:
+    path: /etc/security/limits.conf
+    line: "{{ item }}"
+    create: yes
+  loop:
+    - "nginx  soft  nofile  5000"
+    - "nginx  hard  nofile  10000"
 
-  - name: Generate self-signed private key
-    openssl_privatekey:
-      path: /etc/nginx/tls/self.key
-      size: 2048
+- name: Generate DHparam
+  openssl_dhparam:
+    path: /etc/nginx/tls/dhparam.pem
+    size: 2048
 
-  - name: Generate self-signed tls cert
-    openssl_certificate:
-      path: /etc/nginx/tls/self.crt
-      privatekey_path: /etc/nginx/tls/self.key
-      provider: selfsigned
-  
-  - name: Nginx Service
-    systemd:
-      name: nginx.service
-      state: started
-      enabled: yes
+- name: Generate self-signed private key
+  openssl_privatekey:
+    path: /etc/nginx/tls/self.key
+    size: 2048
+
+- name: Generate self-signed tls cert
+  openssl_certificate:
+    path: /etc/nginx/tls/self.crt
+    privatekey_path: /etc/nginx/tls/self.key
+    provider: selfsigned
+
+- name: Nginx Service
+  systemd:
+    name: nginx.service
+    state: started
+    enabled: yes

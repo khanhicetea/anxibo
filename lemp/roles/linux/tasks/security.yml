@@ -1,56 +1,56 @@
 ---
-  - name: Check authorized_keys
-    stat:
-      path: ~/.ssh/authorized_keys
-    register: ak_existed
+- name: Check authorized_keys
+  stat:
+    path: ~/.ssh/authorized_keys
+  register: ak_existed
 
-  - name: Disable password ssh
-    lineinfile:
-      dest: /etc/ssh/sshd_config
-      regexp: '^(.*)PasswordAuthentication(.*)$'
-      line: 'PasswordAuthentication no'
-      state: present
+- name: Disable password ssh
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^(.*)PasswordAuthentication(.*)$'
+    line: 'PasswordAuthentication no'
+    state: present
 
-  - name: Restart sshd
-    systemd:
-      name: ssh.service
-      state: restarted
-      enabled: yes
-  
-  - name: Disable IPv6 ufw
-    replace:
-      path: /etc/default/ufw
-      regexp: 'IPV6=yes'
-      replace: 'IPV6=no'
+- name: Restart sshd
+  systemd:
+    name: ssh.service
+    state: restarted
+    enabled: yes
 
-  - name: Allow firewall
-    ufw:
-      default: deny
-      direction: incoming
-  
-  - name: Allow firewall
-    ufw:
-      default: allow
-      direction: outgoing
-  
-  - name: Limit 22
-    ufw:
-      rule: limit
-      port: ssh
-      proto: tcp
-  
-  - name: Allow 80
-    ufw:
-      rule: allow
-      port: '80'
-      proto: tcp
+- name: Disable IPv6 ufw
+  replace:
+    path: /etc/default/ufw
+    regexp: 'IPV6=yes'
+    replace: 'IPV6=no'
 
-  - name: Allow 443
-    ufw:
-      rule: allow
-      port: '443'
-      proto: tcp
+- name: Allow firewall
+  ufw:
+    default: deny
+    direction: incoming
 
-  - name: Enable ufw
-    ufw:
-      state: enabled
+- name: Allow firewall
+  ufw:
+    default: allow
+    direction: outgoing
+
+- name: Limit 22
+  ufw:
+    rule: limit
+    port: ssh
+    proto: tcp
+
+- name: Allow 80
+  ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+
+- name: Allow 443
+  ufw:
+    rule: allow
+    port: '443'
+    proto: tcp
+
+- name: Enable ufw
+  ufw:
+    state: enabled

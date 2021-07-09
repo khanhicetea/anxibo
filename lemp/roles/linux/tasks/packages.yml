@@ -1,31 +1,31 @@
 ---
-  - name: Enable universe repository
-    apt_repository:
-      repo: "{{ item }}"
-    loop:
-      - "deb http://archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }} universe"
-      - "deb http://archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-updates universe"
-      - "deb http://security.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-security universe"
-  
-  - name: Install common packages and tools
-    apt:
-      pkg:
-        - ufw
-        - wget
-        - git
-        - screen
-        - vim
-        - curl
-        - zip
-        - unzip
-        - software-properties-common
-        - gnupg
-  
-  - name: Screenrc file
-    lineinfile:
-      path: /etc/screenrc
-      line: "{{ item }}"
-      create: yes
-    loop:
-      - "hardstatus alwayslastline"
-      - "hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{=kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B}%Y-%m-%d %{W}%c %{g}]'"
+- name: Enable universe repository
+  apt_repository:
+    repo: "{{ item }}"
+  loop:
+    - "deb http://archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }} universe"
+    - "deb http://archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-updates universe"
+    - "deb http://security.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-security universe"
+
+- name: Install common packages and tools
+  apt:
+    pkg:
+      - ufw
+      - wget
+      - git
+      - screen
+      - vim
+      - curl
+      - zip
+      - unzip
+      - software-properties-common
+      - gnupg
+
+- name: Screenrc file
+  lineinfile:
+    path: /etc/screenrc
+    line: "{{ item }}"
+    create: yes
+  loop:
+    - "hardstatus alwayslastline"
+    - "hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{=kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B}%Y-%m-%d %{W}%c %{g}]'"

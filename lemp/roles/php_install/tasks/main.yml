@@ -1,0 +1,83 @@
+---
+- name: Add ppa php
+  apt_repository:
+    repo: 'ppa:ondrej/php'
+
+- name: Install PHP and PHP libs
+  apt:
+    name:
+      - "php{{ php_ver | default ('7.4') }}-bz2"
+      - "php{{ php_ver | default ('7.4') }}-cli"
+      - "php{{ php_ver | default ('7.4') }}-common"
+      - "php{{ php_ver | default ('7.4') }}-curl"
+      - "php{{ php_ver | default ('7.4') }}-fpm"
+      - "php{{ php_ver | default ('7.4') }}-gd"
+      - "php{{ php_ver | default ('7.4') }}-intl"
+      - "php{{ php_ver | default ('7.4') }}-mbstring"
+      - "php{{ php_ver | default ('7.4') }}-mysql"
+      - "php{{ php_ver | default ('7.4') }}-opcache"
+      - "php{{ php_ver | default ('7.4') }}-readline"
+      - "php{{ php_ver | default ('7.4') }}-xml"
+      - "php{{ php_ver | default ('7.4') }}-xmlrpc"
+      - "php{{ php_ver | default ('7.4') }}-xsl"
+      - "php{{ php_ver | default ('7.4') }}-zip"
+      - "php{{ php_ver | default ('7.4') }}-redis"
+
+- name: Timezone
+  lineinfile:
+    dest: /etc/php/{{ php_ver | default ('7.4') }}/{{ item }}/php.ini
+    regexp: "date.timezone ="
+    line: "date.timezone = {{ timezone | default('Asia/Ho_Chi_Minh') }}"
+  loop:
+    - cli
+    - fpm
+
+- name: FPM config 1
+  lineinfile:
+    dest: /etc/php/{{ php_ver | default ('7.4') }}/fpm/php.ini
+    search_string: "{{ item.key }} ="
+    line: "{{ item.key }} = {{ item.value }}"
+  with_items:
+    - { key: max_input_vars, value : 10000}
+    - { key: upload_max_filesize, value : 10M}
+    - { key: post_max_size, value : 12M}
+    - { key: max_execution_time, value : 60}
+  
+- name: FPM config 2
+  lineinfile:
+    dest: /etc/php/{{ php_ver | default ('7.4') }}/fpm/php.ini
+    search_string: "{{ item.key }}="
+    line: "{{ item.key }}={{ item.value }}"
+  with_items:
+    - { key: cgi.fix_pathinfo, value : 0}
+    - { key: opcache.enable , value : 1}
+    - { key: opcache.use_cwd, value : 1}
+    - { key: opcache.validate_timestamps, value : 1}
+    - { key: opcache.revalidate_freq, value : 20}
+
+- name: PHPFPM Service
+  systemd:
+    name: php{{ php_ver | default ('7.4') }}-fpm.service
+    state: restarted
+    enabled: yes
+
+- name: Download composer installer
+  get_url:
+    url: https://getcomposer.org/installer
+    dest: /tmp/composer-setup.php
+
+- name: Run script
+  shell:
+    chdir: /tmp
+    cmd: /usr/bin/php composer-setup.php
+
+- name: Copy composer to bin dir
+  copy:
+    remote_src: true
+    src: /tmp/composer.phar
+    dest: /usr/local/bin/composer
+
+- name: Allow composer to run
+  file:
+    path: /usr/local/bin/composer
+    mode: a+x
