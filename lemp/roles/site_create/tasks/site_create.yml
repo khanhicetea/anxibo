@@ -1,0 +1,41 @@
+---
+- name: make docroot
+  file:
+    path: /home/{{ username }}/{{ main_domain }}
+    owner: "{{ username }}"
+    group: "www-data"
+    state: directory
+    mode: '770'
+
+- name: vhost nginx conf
+  template:
+    src: vhost.conf.j2
+    dest: /etc/nginx/conf.d/{{ main_domain }}.conf
+
+- name: nginx reload
+  systemd:
+    name: nginx
+    state: reloaded
+
+- name: run LE to generate tls
+  command: "/opt/lego/lego -a -k rsa2048 --path /var/lego --email {{ le_email }} --http --http.webroot=\"/usr/share/nginx/acme-challenge\" --domains {{ main_domain }} run"
+
+- name: replace tls path
+  replace:
+    path: /etc/nginx/conf.d/{{ main_domain }}.conf
+    regexp: '/etc/nginx/tls/self\.(.+)'
+    replace: '/var/lego/certificates/{{ main_domain }}.\1'
+
+- name: nginx reload
+  systemd:
+    name: nginx
+    state: reloaded
+
+- name: add new domain to renew domain
+  lineinfile:
+    path: /var/lego/renew_domains.txt
+    line: "{{ main_domain }}|{{ le_email }}"
+
+- name: add new database
+  command: "mysql -u root -e \"CREATE SCHEMA `{{ username }}_{{ db_name }}` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\""
+  when: db_name != ""

@@ -4,14 +4,14 @@
     - name: username
       prompt: What is username?
       private: no
-    # - name: main_domain
-    #   prompt: What is main domain?
-    #   private: no
-    # - name: le_email
-    #   prompt: What is LE email?
-    #   private: no
-    # - name: db_name
-    #   prompt: What is database name?
-    #   private: no
+    - name: main_domain
+      prompt: What is main domain?
+      private: no
+    - name: le_email
+      prompt: What is LE email?
+      private: no
+    - name: db_name
+      prompt: What is database name?
+      private: no
   roles:
     - site_create
