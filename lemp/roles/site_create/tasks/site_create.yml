@@ -18,7 +18,7 @@
     state: reloaded
 
 - name: run LE to generate tls
-  command: "/opt/lego/lego -a -k rsa2048 --path /var/lego --email {{ le_email }} --http --http.webroot=\"/usr/share/nginx/acme-challenge\" --domains {{ main_domain }} run"
+  command: "/opt/lego/lego -a -k rsa2048 --path /var/lego --email {{ le_email }} --http --http.webroot=\"/usr/share/nginx/acme-challenge\" --domains {{ main_domain }} {{ (([''] + alter_domains.split(',')) | join(' --domains ')) if alter_domains else '' }} run"
 
 - name: replace tls path
   replace:

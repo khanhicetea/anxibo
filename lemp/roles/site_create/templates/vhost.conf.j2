@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name {{ main_domain }};
+    server_name {{ main_domain }} {{ alter_domains.replace(',', ' ') }};
     
     location /.well-known {
         alias /usr/share/nginx/acme-challenge/.well-known;
@@ -11,7 +11,7 @@ server {
 }
 server {
     listen 443 ssl http2;
-    server_name {{ main_domain }};
+    server_name {{ main_domain }} {{ alter_domains.replace(',', ' ') }};
     root /home/{{ username }}/{{ main_domain }};
     
     ssl_certificate     /etc/nginx/tls/self.crt;
