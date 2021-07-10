@@ -15,17 +15,6 @@
     state: restarted
     enabled: yes
 
-- name: Generate MySQL password
-  set_fact:
-    mysql_pass: "{{ lookup('password', '/dev/null length=16 chars=ascii_letters,digits') }}"
-
-- name: Create anxibo user
-  command: "{{ item }}"
-  loop:
-    - "mysql -u root -e \"CREATE USER 'anxibo'@'localhost' IDENTIFIED BY '{{ mysql_pass }}';\""
-    - "mysql -u root -e \"GRANT ALL PRIVILEGES ON *.* TO 'anxibo'@'localhost' WITH GRANT OPTION;\""
-    - "mysql -u root -e \"FLUSH PRIVILEGES;\""
-
 - name: Generate .my.cnf
   template:
     src: my.cnf.j2
