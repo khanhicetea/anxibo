@@ -1,6 +1,6 @@
 ## An-Xi-Bo
 
-Named **An-Xi-Bo** (Ansible sounds in Vietnamese), is IaC (Infrastructure as Code) tool replace for (lenmay)[https://github.com/khanhicetea/lenmay] with python and bash script.
+Named **An-Xi-Bo** (Ansible sounds in Vietnamese), is IaC (Infrastructure as Code) tool replace for [lenmay](https://github.com/khanhicetea/lenmay) with python and bash script.
 
 ### Why ?
 
