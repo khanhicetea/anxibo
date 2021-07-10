@@ -6,7 +6,7 @@
     - name: run_confirm
       prompt: >-
         You have selected {{ ansible_play_batch }}. Do you want
-        to continue?
+        to continue [Y/n]?
   roles:
     - confirm
     - linux
