@@ -1,20 +1,22 @@
 ---
 - hosts: all
-  vars_prompt:
-    - name: username
-      prompt: What is username?
-      private: no
-    - name: main_domain
-      prompt: What is main domain?
-      private: no
-    - name: alter_domains
-      prompt: What is alternative domains (comma-separated)?
-      private: no
-    - name: le_email
-      prompt: What is LE email?
-      private: no
-    - name: db_name
-      prompt: What is database name (leave blank to ignore)?
-      private: no
+  vars_files:
+    - vars/all.yml
+  # vars_prompt:
+  #   - name: username
+  #     prompt: What is username?
+  #     private: no
+  #   - name: main_domain
+  #     prompt: What is main domain?
+  #     private: no
+  #   - name: alter_domains
+  #     prompt: What is alternative domains (comma-separated)?
+  #     private: no
+  #   - name: le_email
+  #     prompt: What is LE email?
+  #     private: no
+  #   - name: db_name
+  #     prompt: What is database name (leave blank to ignore)?
+  #     private: no
   roles:
     - site_create

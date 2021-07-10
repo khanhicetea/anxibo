@@ -6,36 +6,36 @@
 - name: Install PHP and PHP libs
   apt:
     name:
-      - "php{{ php_ver | default ('7.4') }}-bz2"
-      - "php{{ php_ver | default ('7.4') }}-cli"
-      - "php{{ php_ver | default ('7.4') }}-common"
-      - "php{{ php_ver | default ('7.4') }}-curl"
-      - "php{{ php_ver | default ('7.4') }}-fpm"
-      - "php{{ php_ver | default ('7.4') }}-gd"
-      - "php{{ php_ver | default ('7.4') }}-intl"
-      - "php{{ php_ver | default ('7.4') }}-mbstring"
-      - "php{{ php_ver | default ('7.4') }}-mysql"
-      - "php{{ php_ver | default ('7.4') }}-opcache"
-      - "php{{ php_ver | default ('7.4') }}-readline"
-      - "php{{ php_ver | default ('7.4') }}-xml"
-      - "php{{ php_ver | default ('7.4') }}-xmlrpc"
-      - "php{{ php_ver | default ('7.4') }}-xsl"
-      - "php{{ php_ver | default ('7.4') }}-zip"
-      - "php{{ php_ver | default ('7.4') }}-redis"
+      - "php{{ php_ver }}-bz2"
+      - "php{{ php_ver }}-cli"
+      - "php{{ php_ver }}-common"
+      - "php{{ php_ver }}-curl"
+      - "php{{ php_ver }}-fpm"
+      - "php{{ php_ver }}-gd"
+      - "php{{ php_ver }}-intl"
+      - "php{{ php_ver }}-mbstring"
+      - "php{{ php_ver }}-mysql"
+      - "php{{ php_ver }}-opcache"
+      - "php{{ php_ver }}-readline"
+      - "php{{ php_ver }}-xml"
+      - "php{{ php_ver }}-xmlrpc"
+      - "php{{ php_ver }}-xsl"
+      - "php{{ php_ver }}-zip"
+      - "php{{ php_ver }}-redis"
 
 - name: Cli config
   template:
     src: 90-custom-cli.ini.j2
-    dest: /etc/php/{{ php_ver | default ('7.4') }}/cli/conf.d/90-custom.ini
+    dest: /etc/php/{{ php_ver }}/cli/conf.d/90-custom.ini
 
 - name: FPM config
   template:
     src: 90-custom-fpm.ini.j2
-    dest: /etc/php/{{ php_ver | default ('7.4') }}/fpm/conf.d/90-custom.ini
+    dest: /etc/php/{{ php_ver }}/fpm/conf.d/90-custom.ini
 
 - name: PHPFPM Service
   systemd:
-    name: php{{ php_ver | default ('7.4') }}-fpm.service
+    name: php{{ php_ver }}-fpm.service
     state: restarted
     enabled: yes
 

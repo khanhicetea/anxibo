@@ -27,6 +27,6 @@ server {
 
     location ~ \.php$ {
         include php_fastcgi;
-        fastcgi_pass unix:/var/run/php/php{{ php_ver | default ('7.4') }}-fpm.{{ username }}.sock;
+        fastcgi_pass unix:/var/run/php/php{{ php_ver }}-fpm.{{ username }}.sock;
     }
 }

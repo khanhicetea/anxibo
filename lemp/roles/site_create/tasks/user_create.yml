@@ -32,11 +32,11 @@
 - name: fpm pool
   template:
     src: pool.conf.j2
-    dest: /etc/php/{{ php_ver | default ('7.4') }}/fpm/pool.d/{{ username }}.conf
+    dest: /etc/php/{{ php_ver }}/fpm/pool.d/{{ username }}.conf
 
 - name: reload phpfpm service
   systemd:
-    name: php{{ php_ver | default ('7.4') }}-fpm.service
+    name: php{{ php_ver }}-fpm.service
     state: reloaded
 
 - name: generate MySQL random password
