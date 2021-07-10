@@ -1,8 +1,7 @@
 ---
 - name: debug
   debug:
-    msg: "{{ username }} {{ main_domain }} {{ le_email }} {{ db_name }}"
-    # msg: "{{ username }}"
+    msg: "{{ username }} {{ main_domain }} {{ alter_domains }} {{ le_email }} {{ db_name }}"
 
 - name: check user is existed
   command: "id {{ username }}"
