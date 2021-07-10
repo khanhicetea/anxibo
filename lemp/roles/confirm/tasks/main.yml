@@ -1,0 +1,5 @@
+---
+- name: check for confirmation
+  fail:
+    msg: "Cancelled!"
+  when: run_confirm.lower() != 'y'

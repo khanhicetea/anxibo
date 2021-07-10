@@ -2,7 +2,13 @@
 - hosts: all
   vars_files:
     - vars/all.yml
+  vars_prompt:
+    - name: run_confirm
+      prompt: >-
+        You have selected {{ ansible_play_batch }}. Do you want
+        to continue?
   roles:
+    - confirm
     - linux
     - nginx_install
     - mysql_install
