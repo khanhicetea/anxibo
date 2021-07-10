@@ -4,6 +4,15 @@
   environment:
     DEBIAN_FRONTEND: noninteractive
 
+- name: MySQL nolimit
+  lineinfile:
+    path: /etc/security/limits.conf
+    line: "{{ item }}"
+    create: yes
+  loop:
+    - "mysql  soft  nofile  10000"
+    - "mysql  hard  nofile  20000"
+
 - name: Mysql Server Config
   template:
     src: mysqld.conf.j2
