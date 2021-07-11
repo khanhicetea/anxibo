@@ -15,7 +15,7 @@ Ansible is more stable, consistent and active-maintained
 Install LEMP Stack
 
 ```
-$ ansible-playbook lemp/lemp.yml
+$ ansible-playbook lemp/setup.yml
 ```
 
 Create a new site
