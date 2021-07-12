@@ -7,6 +7,7 @@
       prompt: >-
         You have selected {{ ansible_play_batch }}. Do you want
         to continue [Y/n]?
+      private: no
     - name: username
       prompt: What is username?
       private: no
