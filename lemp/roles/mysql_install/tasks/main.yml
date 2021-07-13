@@ -29,4 +29,19 @@
     src: my.cnf.j2
     dest: ~/.my.cnf
     mode: '600'
-  
+
+- name: Backup script
+  template:
+    src: mybackup.sh.j2
+    dest: /usr/local/bin/mybackup
+    mode: a+x
+
+- name: Install rclone installer
+  get_url:
+    url: https://rclone.org/install.sh
+    dest: /tmp/rclone_install.sh
+
+- name: Run rclone installer
+  shell:
+    chdir: /tmp
+    cmd: /usr/bin/bash rclone_install.sh

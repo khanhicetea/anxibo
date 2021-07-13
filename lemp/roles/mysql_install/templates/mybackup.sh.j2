@@ -1,0 +1,43 @@
+#!/bin/bash
+set -x
+umask 027
+
+if [ -z "$3" ]
+then
+    echo "Please input database names and remote storage name , bucket"
+    exit 1
+fi
+
+ARG_DB="$1"
+REMOTE="$2"
+BUCKET="$3"
+   
+if [[ "$ARG_DB" = "ALL" ]]
+then
+    BACKUP_DBS=$(echo "show databases" | mysql | grep -Ev "^(Database|mysql|performance_schema|information_schema|sys)$")
+else
+    BACKUP_DBS="$ARG_DB"
+fi
+
+sudo mkdir /tmp/mybackup
+cd /tmp/mybackup
+
+TODAY=`date +%Y-%m-%d`
+RM_DAY=`date --date="14 days ago" +%Y-%m-%d`
+HOSTIP=`curl --silent https://icanhazip.com/`
+SQL_FILENAME=$TODAY.$ARG_DB.sql
+COMPRESSED_FILENAME=$SQL_FILENAME.tar.gz
+RM_FILENAME=$RM_DAY.$ARG_DB.sql.tar.gz
+
+echo "Backup database in $TODAY ...."
+mysqldump --opt --no-autocommit --single-transaction --routines --force --databases ${BACKUP_DBS} > $SQL_FILENAME
+tar zcf $COMPRESSED_FILENAME $SQL_FILENAME
+
+echo "Uploading to Cloud Storage ...."
+rclone copy "${COMPRESSED_FILENAME}" "${REMOTE}:${BUCKET}/${HOSTIP}/"
+
+echo "delete remote file\n"
+rclone delete "${REMOTE}:${BUCKET}/${HOSTIP}/${RM_FILENAME}"
+
+echo "Cleaning ..."
+rm -rf "/tmp/mybackup
