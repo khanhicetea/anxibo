@@ -1,0 +1,16 @@
+---
+- name: Disable default systemd-resolved service
+  systemd:
+    name: systemd-resolved.service
+    state: stopped
+    enabled: no
+
+- name: Remove default /etc/resolv.conf
+  file:
+    path: /etc/resolv.conf
+    state: absent
+
+- name: New /etc/resolv.conf
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
