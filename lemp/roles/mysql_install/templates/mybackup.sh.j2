@@ -39,7 +39,7 @@ cd /tmp/mybackup
 echo "Backup databases in $TODAY ...."
 for DB in $BACKUP_DBS
 do
-    mysqldump --skip-tz-utc --opt --no-autocommit --single-transaction --routines --no-tablespaces --force ${BACKUP_DBS} > "${TODAY}/${DB}.sql"
+    mysqldump --skip-tz-utc --opt --no-autocommit --single-transaction --routines --no-tablespaces --force ${DB} > "${TODAY}/${DB}.sql"
 done
 
 echo "Compressing databases ..."
