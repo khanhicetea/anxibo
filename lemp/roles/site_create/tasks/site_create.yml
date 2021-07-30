@@ -6,6 +6,7 @@
     group: "www-data"
     state: directory
     mode: '770'
+  when: username != ""
 
 - name: add new database
   command: "mysql -u root -e \"CREATE SCHEMA `{{ username }}_{{ db_name }}` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\""

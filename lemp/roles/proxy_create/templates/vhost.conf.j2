@@ -1,0 +1,12 @@
+server {
+    listen 80;
+    server_name {{ main_domain }} {{ alter_domains.replace(',', ' ') }};
+    
+    location /.well-known {
+        alias /usr/share/nginx/acme-challenge/.well-known;
+    }
+    
+    location / {
+        return 404;
+    }
+}

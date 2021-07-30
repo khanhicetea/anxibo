@@ -1,0 +1,14 @@
+---
+- name: vhost nginx conf
+  template:
+    src: "{{ 'vhost_tls' if le_email else 'vhost'  }}.conf.j2"
+    dest: /etc/nginx/conf.d/{{ main_domain }}.conf
+
+- name: nginx reload
+  systemd:
+    name: nginx
+    state: reloaded
+
+- name: setup TLS
+  include_tasks: 'roles/site_create/tasks/tls.yml'
+  when: le_email != ""

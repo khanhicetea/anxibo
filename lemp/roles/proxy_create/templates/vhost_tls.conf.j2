@@ -1,0 +1,24 @@
+server {
+    listen 80;
+    server_name {{ main_domain }} {{ alter_domains.replace(',', ' ') }};
+    
+    location /.well-known {
+        alias /usr/share/nginx/acme-challenge/.well-known;
+    }
+    location / {
+        return 301 https://{{ main_domain }}$request_uri;
+    }
+}
+server {
+    listen 443 ssl http2;
+    server_name {{ main_domain }} {{ alter_domains.replace(',', ' ') }};
+    
+    ssl_certificate     /etc/nginx/tls/self.crt;
+    ssl_certificate_key /etc/nginx/tls/self.key;
+    
+    include tls_snippet;
+
+    location / {
+        return 404;
+    }
+}
