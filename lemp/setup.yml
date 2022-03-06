@@ -7,31 +7,35 @@
       prompt: >-
         You have selected {{ ansible_play_batch }}. Do you want
         to continue [Y/n]?
-      default: 'y'
+      default: "y"
+      private: no
+    - name: bootstrap_linux
+      prompt: Bootstrap Linux [Y/n]?
+      default: "y"
       private: no
     - name: install_nginx
       prompt: Install NginX [Y/n]?
-      default: 'y'
+      default: "y"
       private: no
     - name: install_mysql
       prompt: Install MySQL [Y/n]?
-      default: 'y'
+      default: "y"
       private: no
     - name: install_nodejs
       prompt: Install NodeJS [Y/n]?
-      default: 'y'
+      default: "y"
       private: no
     - name: install_redis
       prompt: Install Redis [Y/n]?
-      default: 'y'
+      default: "y"
       private: no
     - name: install_php
       prompt: Install PHP [Y/n]?
-      default: 'y'
+      default: "y"
       private: no
   roles:
     - { role: confirm }
-    - { role: linux }
+    - { role: linux, when: bootstrap_linux.lower() == 'y' }
     - { role: nginx_install, when: install_nginx.lower() == 'y' }
     - { role: mysql_install, when: install_mysql.lower() == 'y' }
     - { role: nodejs_install, when: install_nodejs.lower() == 'y' }
