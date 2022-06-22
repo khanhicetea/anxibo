@@ -1,0 +1,34 @@
+#/bin/sh
+set -x
+
+if [ -f .env ]; then
+        export $(echo $(cat .env | sed 's/#.*//g'| xargs) | envsubst)
+fi
+
+CA_SERVER="${CA_SERVER:-'https://acme-v02.api.letsencrypt.org/directory'}"
+EAB_KID="${EAB_KID:-}"
+EAB_HMAC="${EAB_HMAC:-}"
+KEY_TYPE="${KEY_TYPE:-rsa2048}"
+COMMAND="$1"
+EMAIL="${2:-$EMAIL}"
+DOMAIN="$3"
+ENDPOINT="/opt/lego/lego"
+
+if [ ! -z "$CA_SERVER" ]
+then
+        ENDPOINT+=" --server $CA_SERVER"
+fi
+if [ ! -z "$EAB_KID" ]
+then
+        ENDPOINT+=" --eab --kid $EAB_KID --hmac $EAB_HMAC"
+fi
+
+if [ $COMMAND == 'run' ]
+then
+        echo "Run"
+        sudo $ENDPOINT -a -k $KEY_TYPE --path /var/lego --email $EMAIL --http --http.webroot="/usr/share/nginx/acme-challenge" --domains $DOMAIN run
+elif [ $COMMAND == 'renew' ]
+then
+        echo "Renew"
+        sudo $ENDPOINT -a -k $KEY_TYPE --path /var/lego --email $EMAIL --domains $DOMAIN --http --http.webroot=/usr/share/nginx/acme-challenge renew --days 30 --renew-hook="/usr/bin/systemctl reload nginx.service"
+fi

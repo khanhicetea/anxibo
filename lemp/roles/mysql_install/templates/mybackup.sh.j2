@@ -28,7 +28,7 @@ fi
 echo "$BACKUP_DBS"
 
 TODAY=`date +%Y-%m-%d`
-RM_DAY=`date --date="14 days ago" +%Y-%m-%d`
+RM_DAY=`date --date="30 days ago" +%Y-%m-%d`
 HOSTIP=`curl --silent https://icanhazip.com/`
 COMPRESSED_FILENAME=$TODAY.$ARG_DB.tar.gz
 RM_FILENAME=$RM_DAY.$ARG_DB.tar.gz
