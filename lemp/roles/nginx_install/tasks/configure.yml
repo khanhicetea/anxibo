@@ -13,7 +13,7 @@
   template:
     src: default.conf.j2
     dest: /etc/nginx/conf.d/default.conf
-    
+
 - name: Config php_fastcgi
   template:
     src: php_fastcgi.j2
@@ -21,13 +21,18 @@
 
 - name: Config server snippet
   template:
-    src: server_snippet.j2
-    dest: /etc/nginx/server_snippet
+    src: general.j2
+    dest: /etc/nginx/general
 
-- name: Config tls snippet
+- name: Config acme snippet
   template:
-    src: tls_snippet.j2
-    dest: /etc/nginx/tls_snippet
+    src: acme.j2
+    dest: /etc/nginx/acme
+
+- name: Config security snippet
+  template:
+    src: security.j2
+    dest: /etc/nginx/security
 
 - name: Make dirs
   file:
@@ -43,8 +48,8 @@
     line: "{{ item }}"
     create: yes
   loop:
-    - "nginx  soft  nofile  5000"
-    - "nginx  hard  nofile  10000"
+    - "nginx  soft  nofile  65535"
+    - "nginx  hard  nofile  65535"
 
 - name: Generate DHparam
   openssl_dhparam:

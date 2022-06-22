@@ -1,11 +1,8 @@
 server {
     listen 80;
     server_name {{ main_domain }} {{ alter_domains.replace(',', ' ') }};
-    root /home/{{ username }}/{{ main_domain }};
-    
-    location /.well-known {
-        alias /usr/share/nginx/acme-challenge/.well-known;
-    }
+    set  $base /home/{{ username }}/{{ main_domain }};
+    root $base;
     
     include server_snippet;
 
