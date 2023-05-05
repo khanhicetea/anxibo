@@ -11,9 +11,6 @@
     - name: main_domain
       prompt: What is main domain?
       private: no
-    - name: alter_domains
-      prompt: What is alternative domains (comma-separated)?
-      private: no
     - name: le_email
       prompt: What is LE email?
       private: no

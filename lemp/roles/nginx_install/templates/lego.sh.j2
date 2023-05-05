@@ -5,10 +5,10 @@ if [ -f .env ]; then
         export $(echo $(cat .env | sed 's/#.*//g'| xargs) | envsubst)
 fi
 
-CA_SERVER="${CA_SERVER:-'https://acme-v02.api.letsencrypt.org/directory'}"
+CA_SERVER="${CA_SERVER:-}"
 EAB_KID="${EAB_KID:-}"
 EAB_HMAC="${EAB_HMAC:-}"
-KEY_TYPE="${KEY_TYPE:-rsa2048}"
+KEY_TYPE="${KEY_TYPE:-ec256}"
 COMMAND="$1"
 EMAIL="${2:-$EMAIL}"
 DOMAIN="$3"
