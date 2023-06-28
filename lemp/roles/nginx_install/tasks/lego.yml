@@ -11,7 +11,7 @@
 
 - name: Download lego
   unarchive:
-    src: https://github.com/go-acme/lego/releases/download/v4.11.0/lego_v4.11.0_linux_amd64.tar.gz
+    src: https://github.com/go-acme/lego/releases/download/v4.12.3/lego_v4.12.3_linux_amd64.tar.gz
     dest: /opt/lego
     remote_src: yes
 
@@ -30,6 +30,12 @@
   template:
     src: renew_cron.sh.j2
     dest: /var/lego/renew_cron.sh
+    mode: a+x
+
+- name: Reload at script
+  template:
+    src: reload_at.sh.j2
+    dest: /var/lego/reload_at.sh
     mode: a+x
 
 - name: Setup cron

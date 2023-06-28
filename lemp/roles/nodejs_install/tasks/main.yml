@@ -6,29 +6,20 @@
       - gnupg2
     state: present
 
-- name: Add Nodesource apt key.
+- name: "Add nodejs apt key"
   apt_key:
-    url: https://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search=0x1655A0AB68576280
-    id: "68576280"
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
     state: present
 
-- name: Add NodeSource repositories for Node.js.
+- name: "Add nodejs 18.x ppa for apt repo"
   apt_repository:
-    repo: "{{ item }}"
-    state: present
-  with_items:
-    - "deb https://deb.nodesource.com/node_14.x {{ ansible_distribution_release }} main"
-    - "deb-src https://deb.nodesource.com/node_14.x {{ ansible_distribution_release }} main"
-  register: node_repo
+    repo: deb https://deb.nodesource.com/node_18.x jammy main
+    update_cache: yes
 
-- name: Update apt cache if repo was added.
-  apt: update_cache=yes
-  when: node_repo.changed
-  tags: ['skip_ansible_lint']
-
-- name: Ensure Node.js and npm are installed.
+- name: "Install nodejs"
   apt:
-    name: "nodejs"
+    update_cache: yes
+    name: nodejs
     state: present
 
 - name: Install yarn

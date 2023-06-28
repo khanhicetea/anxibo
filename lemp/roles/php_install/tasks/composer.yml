@@ -1,0 +1,21 @@
+---
+- name: Download composer installer
+  get_url:
+    url: https://getcomposer.org/installer
+    dest: /tmp/composer-setup.php
+
+- name: Run script
+  shell:
+    chdir: /tmp
+    cmd: /usr/bin/php composer-setup.php
+
+- name: Copy composer to bin dir
+  copy:
+    remote_src: true
+    src: /tmp/composer.phar
+    dest: /usr/local/bin/composer
+
+- name: Allow composer to run
+  file:
+    path: /usr/local/bin/composer
+    mode: a+x

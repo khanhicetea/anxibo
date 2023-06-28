@@ -5,7 +5,7 @@
     group: "www-data"
     shell: /bin/bash
     generate_ssh_key: yes
-    ssh_key_bits: 2048
+    ssh_key_bits: 4096
     ssh_key_file: .ssh/id_rsa
 
 - name: create bashrc
@@ -27,7 +27,7 @@
     owner: "{{ username }}"
     group: "www-data"
     state: directory
-    mode: '770'
+    mode: "770"
 
 - name: fpm pool
   template:

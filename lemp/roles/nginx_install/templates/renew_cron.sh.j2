@@ -5,7 +5,7 @@ echo "\n===== Automated Renew Certificates ====="
 while IFS='|' read -r domain email
 do
     echo -e "\n- Trying to renew domain $domain of $email"
-    /var/lego/lego.sh renew $email $domain
+    /var/lego/lego.sh renew $email $domain || true
 done < /var/lego/renew_domains.txt
 
 echo "\n===== DONE ====="
