@@ -8,7 +8,7 @@ log-error       = /var/log/mysql/error.log
 disable_log_bin
 skip_name_resolve
 
-connect_timeout      = 5
+connect_timeout      = 10
 max_allowed_packet   = {{ mysql_max_allowed_packet   | default("16M") }}
 max_connections      = {{ mysql_max_connections      | default("150") }}
 max_heap_table_size  = {{ mysql_max_heap_table_size  | default((ansible_memtotal_mb / 1024 * 64) | int | string + "M") }}
