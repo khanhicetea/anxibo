@@ -1,5 +1,7 @@
 server {
-    listen 443 ssl http2;
+    listen 443 ssl;
+    http2 on;
+    
     server_name {{ main_domain }} {{ alter_domains.replace(',', ' ') }};
     
     set  $base /home/{{ username }}/{{ main_domain }};

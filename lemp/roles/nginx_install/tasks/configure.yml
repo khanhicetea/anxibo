@@ -19,10 +19,15 @@
     src: php_fastcgi.j2
     dest: /etc/nginx/php_fastcgi
 
-- name: Config server snippet
+- name: Config general snippet
   template:
     src: general.j2
     dest: /etc/nginx/general
+
+- name: Config http3 snippet
+  template:
+    src: http3.j2
+    dest: /etc/nginx/http3
 
 - name: Config acme snippet
   template:
