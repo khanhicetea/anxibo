@@ -1,4 +1,8 @@
 ---
+- name: debug
+  debug:
+    msg: "{{ main_domain }} {{ le_email }}"
+
 - name: run LE to generate tls
   command: "/var/lego/lego.sh run {{ le_email }} {{ main_domain }}"
 
