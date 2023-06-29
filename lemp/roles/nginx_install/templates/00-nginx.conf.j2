@@ -29,10 +29,10 @@ reset_timedout_connection on;
 client_header_timeout 5s;
 # if body size is larger, it stores in temp file
 client_body_buffer_size 16k;
-# 10mb body size is enough, increase if you want
-client_max_body_size 10m;
-# 10mb (above size) / 5 / 60 = 35KB/s client upload speed
-client_body_timeout 5m;
+# 32mb body size is enough, increase if you want
+client_max_body_size 32m;
+# 32mb (above size) / 10 / 60 = 55KB/s client upload speed
+client_body_timeout 10m;
 # common header size
 client_header_buffer_size 4k;
 # max header size
@@ -56,7 +56,7 @@ gzip_types text/plain text/css application/json application/x-javascript text/xm
 ssl_session_timeout    60m;
 ssl_session_cache      shared:SSL:20m;
 ssl_session_tickets    off;
-ssl_early_data on;
+ssl_early_data         on;
 
 # Diffie-Hellman parameter for DHE ciphersuites
 ssl_dhparam            /etc/nginx/tls/dhparam.pem;
