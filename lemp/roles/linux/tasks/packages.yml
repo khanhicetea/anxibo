@@ -9,6 +9,7 @@
 
 - name: Install common packages and tools
   apt:
+    update_cache: yes
     pkg:
       - at
       - ufw
