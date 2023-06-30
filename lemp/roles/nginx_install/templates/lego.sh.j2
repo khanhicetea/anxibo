@@ -27,9 +27,9 @@ fi
 if [ $COMMAND = 'run' ]
 then
         echo "Run"
-        $ENDPOINT -a -k $KEY_TYPE --path /var/lego --email $EMAIL --http --http.webroot="/usr/share/nginx/acme-challenge" --domains $DOMAIN run
+        $ENDPOINT -a -k $KEY_TYPE --must-staple --path /var/lego --email $EMAIL --http --http.webroot="/usr/share/nginx/acme-challenge" --domains $DOMAIN run
 elif [ $COMMAND = 'renew' ]
 then
         echo "Renew"
-        $ENDPOINT -a -k $KEY_TYPE --path /var/lego --email $EMAIL --domains $DOMAIN --http --http.webroot=/usr/share/nginx/acme-challenge renew --days 30 --renew-hook="/usr/bin/at 4am tomorrow -f /var/lego/reload_at.sh"
+        $ENDPOINT -a -k $KEY_TYPE --must-staple --path /var/lego --email $EMAIL --domains $DOMAIN --http --http.webroot=/usr/share/nginx/acme-challenge renew --days 30 --renew-hook="/usr/bin/at 4am tomorrow -f /var/lego/reload_at.sh"
 fi
