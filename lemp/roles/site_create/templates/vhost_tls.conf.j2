@@ -10,6 +10,7 @@ server {
     ssl_certificate     /etc/nginx/tls/self.crt;
     ssl_certificate_key /etc/nginx/tls/self.key;
     
+    include acme;
     include security;
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
 
