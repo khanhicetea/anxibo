@@ -2,11 +2,9 @@ server {
     listen 80;
     server_name {{ main_domain }};
     
-    location /.well-known {
-        alias /usr/share/nginx/acme-challenge/.well-known;
-    }
-    
+    include acme;
+
     location / {
-        return 404;
+        return 301 https://{{ main_domain }}$request_uri;
     }
 }
