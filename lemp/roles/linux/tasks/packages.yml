@@ -33,5 +33,6 @@
     line: "{{ item }}"
     create: yes
   loop:
+    - "defscrollback 10000"
     - "hardstatus alwayslastline"
     - "hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{=kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B}%Y-%m-%d %{W}%c %{g}]'"
