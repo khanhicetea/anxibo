@@ -24,11 +24,6 @@
     src: general.j2
     dest: /etc/nginx/general
 
-- name: Config http3 snippet
-  template:
-    src: http3.j2
-    dest: /etc/nginx/http3
-
 - name: Config acme snippet
   template:
     src: acme.j2
@@ -38,6 +33,11 @@
   template:
     src: security.j2
     dest: /etc/nginx/security
+
+- name: Config proxy_ssl snippet
+  template:
+    src: proxy_ssl.j2
+    dest: /etc/nginx/proxy_ssl
 
 - name: Make dirs
   file:
