@@ -13,7 +13,7 @@
 
 - name: "Add nodejs 18.x ppa for apt repo"
   apt_repository:
-    repo: deb https://deb.nodesource.com/node_18.x jammy main
+    repo: deb https://deb.nodesource.com/node_20.x jammy main
     update_cache: yes
 
 - name: "Install nodejs"
