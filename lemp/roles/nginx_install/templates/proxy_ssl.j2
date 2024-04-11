@@ -13,8 +13,8 @@ proxy_set_header X-Real-IP $remote_addr;
 
 proxy_redirect off;
 proxy_max_temp_file_size 1m;
-proxy_connect_timeout      60;
-proxy_send_timeout         60;
+proxy_connect_timeout      30;
+proxy_send_timeout         30;
 proxy_read_timeout         60;
 proxy_buffer_size          4k;
 proxy_buffers              4 4k;

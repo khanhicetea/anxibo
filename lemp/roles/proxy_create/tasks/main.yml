@@ -1,7 +1,7 @@
 ---
 - name: vhost nginx conf
   template:
-    src: "{{ 'vhost_tls' if le_email else 'vhost'  }}.conf.j2"
+    src: "vhost_tls.conf.j2"
     dest: /etc/nginx/conf.d/{{ main_domain }}.conf
 
 - name: nginx reload

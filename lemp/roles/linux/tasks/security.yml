@@ -18,6 +18,7 @@
     enabled: yes
 
 - name: Disable IPv6 ufw
+  when: not ipv6
   replace:
     path: /etc/default/ufw
     regexp: 'IPV6=yes'
@@ -50,6 +51,13 @@
     rule: allow
     port: '443'
     proto: tcp
+
+- name: Allow 443
+  when: http3
+  ufw:
+    rule: allow
+    port: '443'
+    proto: udp
 
 - name: Enable ufw
   ufw:

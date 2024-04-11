@@ -5,7 +5,7 @@ set -x
 cd "$(dirname "$0")"
 
 if [ -f env.sh ]; then
-        . env.sh
+	. env.sh
 fi
 
 CA_SERVER="${CA_SERVER:-}"
@@ -17,21 +17,18 @@ EMAIL="${2:-$EMAIL}"
 DOMAIN="$3"
 ENDPOINT="/opt/lego/lego"
 
-if [ ! -z "$CA_SERVER" ]
-then
-        ENDPOINT="$ENDPOINT --server $CA_SERVER"
+if [ ! -z "$CA_SERVER" ]; then
+	ENDPOINT="$ENDPOINT --server $CA_SERVER"
 fi
-if [ ! -z "$EAB_KID" ]
-then
-        ENDPOINT="$ENDPOINT --eab --kid $EAB_KID --hmac $EAB_HMAC"
+if [ ! -z "$EAB_KID" ]; then
+	ENDPOINT="$ENDPOINT --eab --kid $EAB_KID --hmac $EAB_HMAC"
 fi
 
-if [ $COMMAND = 'run' ]
-then
-        echo "Run"
-        $ENDPOINT -a -k $KEY_TYPE --path /var/lego --email $EMAIL --http --http.webroot="/usr/share/nginx/acme-challenge" --domains $DOMAIN run --must-staple
-elif [ $COMMAND = 'renew' ]
-then
-        echo "Renew"
-        $ENDPOINT -a -k $KEY_TYPE --path /var/lego --email $EMAIL --domains $DOMAIN --http --http.webroot=/usr/share/nginx/acme-challenge renew --days 30 --renew-hook="/usr/bin/at 4am tomorrow -f /var/lego/reload_at.sh" --must-staple
+if [ $COMMAND = 'run' ]; then
+	echo "Run"
+	$ENDPOINT -a -k $KEY_TYPE --path /var/lego --email $EMAIL --http --http.webroot="/usr/share/nginx/acme-challenge" --domains $DOMAIN run --must-staple
+elif [ $COMMAND = 'renew' ]; then
+	echo "Renew"
+	$ENDPOINT -a -k $KEY_TYPE --path /var/lego --email $EMAIL --domains $DOMAIN --http --http.webroot=/usr/share/nginx/acme-challenge renew --days 30 --renew-hook="/usr/bin/at 4am tomorrow -f /var/lego/reload_at.sh" --must-staple
 fi
+

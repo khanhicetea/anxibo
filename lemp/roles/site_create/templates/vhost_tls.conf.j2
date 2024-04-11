@@ -1,19 +1,27 @@
 server {
     listen 443 ssl;
+    {% if ipv6 %}
+    listen [::]:443 ssl;
+    {% endif %}
+
     http2 on;
 
-    # http3
-    #listen 443 quic reuseport; # use "reuseport" once
-    #http3 on;
-    #add_header Alt-Svc 'h3=":443"; ma=86400';
+    {% if http3 %}
+    listen 443 quic;
+    {% if ipv6 %}
+    listen [::]:443 quic;
+    {% endif %}
+    http3 on;
+    add_header Alt-Svc 'h3=":443"; ma=86400';
+    {% endif %}
     
     server_name {{ main_domain }} {{ alter_domains.replace(',', ' ') }};
+
+    ssl_certificate     /etc/nginx/tls/self.crt;
+    ssl_certificate_key /etc/nginx/tls/self.key;
     
     set  $base /home/{{ username }}/{{ main_domain }};
     root $base;
-    
-    ssl_certificate     /etc/nginx/tls/self.crt;
-    ssl_certificate_key /etc/nginx/tls/self.key;
     
     include acme;
     include security;

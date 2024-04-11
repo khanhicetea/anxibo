@@ -49,3 +49,4 @@
 - name: show mysql user pass
   debug:
     msg: "MySQL account is {{ username }} / {{ mysql_user_pass }}"
+
